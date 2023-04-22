@@ -1,10 +1,11 @@
 import "../scss/style.css";
-
 ("use strict");
 
 import { formatCur, formatMovementDate, createUsernames } from "./utils";
 import { accounts } from "./data";
 import { startLogOutTimer } from "./authentication";
+import { containerApp } from "./main-operations";
+
 // Elements
 const labelBalance = document.querySelector(".balance__value");
 const labelSumIn = document.querySelector(".summary__value--in");
