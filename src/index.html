@@ -7,7 +7,7 @@
     <link
       rel="shortcut icon"
       type="image/png"
-      href="/images/content/icon.png"
+      href="./images/content/icon.png"
     />
 
     <link
@@ -21,24 +21,29 @@
     <!-- TOP NAVIGATION -->
     <nav>
       <p class="welcome">Log in to get started</p>
-      <img src="/images/content/logo.png" alt="Logo" class="logo" />
-      <form class="login">
-        <input
-          type="text"
-          placeholder="user"
-          class="login__input login__input--user"
-          value="js"
-        />
-        <!-- In practice, use type="password" -->
-        <input
-          type="text"
-          placeholder="PIN"
-          maxlength="4"
-          class="login__input login__input--pin"
-          value="1111"
-        />
-        <button class="login__btn">&rarr;</button>
-      </form>
+      <img src="./images/content/logo.png" alt="Logo" class="logo" />
+      <div id="logged">
+        <form class="login">
+          <input
+            type="text"
+            placeholder="user"
+            class="login__input login__input--user"
+            value="js"
+          />
+          <!-- In practice, use type="password" -->
+          <input
+            type="text"
+            placeholder="PIN"
+            maxlength="4"
+            class="login__input login__input--pin"
+            value="1111"
+          />
+          <button class="login__btn">&rarr;</button>
+        </form>
+      </div>
+      <button type="button" id="logout__btn" class="btn btn-dark btn-lg hidden">
+        Log out
+      </button>
     </nav>
 
     <main class="app">

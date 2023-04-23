@@ -1,8 +1,4 @@
-/*
- * Use this CSS to learn some intersting techniques,
- * in case you're wondering how I built the UI.
- * Have fun! 😁
- */
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
 * {
   margin: 0;
@@ -80,7 +76,7 @@ nav {
 .btn--sort:hover,
 .btn--sort:focus {
   outline: none;
-  color: #777;
+  color: #625f5f;
 }
 
 /* MAIN */
@@ -294,4 +290,12 @@ h2 {
 
 .timer {
   font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
 }
