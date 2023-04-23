@@ -7,7 +7,7 @@ import {
   updateUI,
 } from "./app";
 
-const loggedIn = document.querySelector("#logged");
+const loginForm = document.querySelector("#logged");
 const btnLogin = document.querySelector(".login__btn");
 const btnLogout = document.querySelector("#logout__btn");
 
@@ -33,11 +33,8 @@ btnLogin.addEventListener("click", function (e) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
     }`;
-    containerApp.style.opacity = 100;
-    loggedIn.style.opacity = 0;
 
-    btnLogout.classList.remove("hidden");
-    btnLogout.classList.add("visible");
+    displayLoggedInApp();
 
     const now01 = new Date();
 
@@ -84,7 +81,7 @@ export const startLogOutTimer = function () {
       clearInterval(timer); //->set opacity back to 0 === log_out
       labelWelcome.textContent = `Log in to get started`;
       containerApp.style.opacity = 0;
-      loggedIn.style.opacity = 100;
+      loginForm.style.opacity = 100;
     }
     //Decrease 1 sec
     time--;
@@ -98,7 +95,18 @@ export const startLogOutTimer = function () {
 
 btnLogout.addEventListener("click", function () {
   containerApp.style.opacity = 0;
-  loggedIn.style.opacity = 100;
   btnLogout.classList.remove("visible");
   btnLogout.classList.add("hidden");
+  loginForm.classList.remove("hidden");
+  loginForm.classList.add("visible");
+  labelWelcome.textContent = `Log in to get started`;
 });
+
+function displayLoggedInApp() {
+  containerApp.style.opacity = 100;
+  loginForm.classList.remove("visible");
+  loginForm.classList.add("hidden");
+
+  btnLogout.classList.remove("hidden");
+  btnLogout.classList.add("visible");
+}

@@ -33,6 +33,8 @@ nav {
 
 .logo {
   height: 5.25rem;
+  position: absolute;
+  left: 50%;
 }
 
 .login {
