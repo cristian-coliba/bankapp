@@ -1,10 +1,11 @@
 import { accounts } from "./data";
+import { formatDateByLocaleTime } from "./utils";
 import {
   currentAccount,
   setCurrentAccount,
   timer,
   setTimer,
-  updateUI,
+  updateUserBankSummaryUI,
 } from "./app";
 
 const loginForm = document.querySelector("#logged");
@@ -29,30 +30,8 @@ btnLogin.addEventListener("click", function (e) {
   setCurrentAccount(currAcc);
 
   if (currentAccount?.pin === +inputLoginPin.value) {
-    // Display UI and message
-    labelWelcome.textContent = `Welcome back, ${
-      currentAccount.owner.split(" ")[0]
-    }`;
-
-    displayLoggedInApp();
-
-    const now01 = new Date();
-
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      day: "numeric",
-      month: "numeric", //'long' for display luna in litere, gen November; can set also -> '2-digit'
-      year: "numeric", //or '2-digit' can be set
-    };
-
-    labelDate.textContent = Intl.DateTimeFormat(
-      currentAccount.locale,
-      options
-    ).format(now01);
-
     // Clear input fields
-    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.value = "";
     inputLoginPin.blur();
 
     if (timer) {
@@ -62,51 +41,51 @@ btnLogin.addEventListener("click", function (e) {
     setTimer(startLogOutTimer());
 
     // Update UI
-    updateUI(currentAccount);
+    updateUIAfterLogin(currentAccount);
+    updateUserBankSummaryUI(currentAccount);
   }
 });
 
 export const startLogOutTimer = function () {
-  let time = 100;
+  let time = 120;
 
   const tick = function () {
     const min = String(Math.trunc(time / 60)).padStart(2, 0);
     const sec = String(time % 60).padStart(2, 0); //remainder(rest)
 
-    //in each call,print remaining time in UI
     labelTimer.textContent = `${min}:${sec}`; //template literals//
 
-    //When time is at positio 0 -> stop timer and log out user
     if (time === 0) {
       clearInterval(timer); //->set opacity back to 0 === log_out
-      labelWelcome.textContent = `Log in to get started`;
-      containerApp.style.opacity = 0;
-      loginForm.style.opacity = 100;
+      updateNavAfterLogout();
     }
-    //Decrease 1 sec
     time--;
   };
-  //Set time to 5 min
-  //Call the time every sec(tikTak)
   tick();
   const timer = setInterval(tick, 1000);
   return timer;
 };
 
-btnLogout.addEventListener("click", function () {
+btnLogout.addEventListener("click", updateNavAfterLogout);
+
+function updateUIAfterLogin(currentAccount) {
+  const userFirstName = currentAccount.owner.split(" ")[0];
+
+  labelDate.textContent = formatDateByLocaleTime(currentAccount.locale);
+  labelWelcome.textContent = `Welcome back, ${userFirstName}`;
+
+  containerApp.style.opacity = 100;
+  loginForm.classList.remove("visible");
+  loginForm.classList.add("hidden");
+  btnLogout.classList.remove("hidden");
+  btnLogout.classList.add("visible");
+}
+
+function updateNavAfterLogout() {
+  labelWelcome.textContent = `Log in to get started`;
   containerApp.style.opacity = 0;
   btnLogout.classList.remove("visible");
   btnLogout.classList.add("hidden");
   loginForm.classList.remove("hidden");
   loginForm.classList.add("visible");
-  labelWelcome.textContent = `Log in to get started`;
-});
-
-function displayLoggedInApp() {
-  containerApp.style.opacity = 100;
-  loginForm.classList.remove("visible");
-  loginForm.classList.add("hidden");
-
-  btnLogout.classList.remove("hidden");
-  btnLogout.classList.add("visible");
 }

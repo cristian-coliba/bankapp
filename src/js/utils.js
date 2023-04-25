@@ -28,3 +28,19 @@ export const createUsernames = function (accs) {
       .join("");
   });
 };
+
+export const formatDateByLocaleTime = function (locale) {
+  const dateNow = new Date();
+
+  const options = {
+    hour: "numeric",
+    minute: "numeric",
+    day: "numeric",
+    month: "numeric", //'long' for display luna in litere, gen November; can set also -> '2-digit'
+    year: "numeric", //or '2-digit' can be set
+  };
+
+  const dateFormatted = Intl.DateTimeFormat(locale, options).format(dateNow);
+
+  return dateFormatted;
+};

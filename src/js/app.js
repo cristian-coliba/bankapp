@@ -81,7 +81,7 @@ const calcDisplaySummary = function (acc) {
   labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
 };
 
-export const updateUI = function (acc) {
+export const updateUserBankSummaryUI = function (acc) {
   // Display movements
   displayMovements(acc);
 

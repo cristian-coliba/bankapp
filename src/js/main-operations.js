@@ -1,5 +1,10 @@
 import { accounts } from "./data";
-import { currentAccount, timer, setTimer, updateUI } from "./app";
+import {
+  currentAccount,
+  timer,
+  setTimer,
+  updateUserBankSummaryUI,
+} from "./app";
 import { startLogOutTimer } from "./authentication";
 
 export const containerApp = document.querySelector(".app");
@@ -39,7 +44,7 @@ btnTransfer.addEventListener("click", function (e) {
     });
 
     // Update UI
-    updateUI(currentAccount);
+    updateUserBankSummaryUI(currentAccount);
 
     //Reset timer
     clearInterval(timer);
@@ -66,7 +71,7 @@ btnLoan.addEventListener("click", function (e) {
         dateTime: new Date().toISOString(),
       });
       // Update UI
-      updateUI(currentAccount);
+      updateUserBankSummaryUI(currentAccount);
       //Reset timer
       clearInterval(timer);
       setTimer(startLogOutTimer());
