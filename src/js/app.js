@@ -1,4 +1,5 @@
 import "../scss/style.css";
+import * as bootstrap from "bootstrap";
 ("use strict");
 
 import { formatCur, formatMovementDate, createUsernames } from "./utils";

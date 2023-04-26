@@ -8,7 +8,10 @@ import {
   updateUserBankSummaryUI,
 } from "./app";
 
-const loginForm = document.querySelector("#logged");
+const authenticationButtons = document.querySelector(
+  "#authentication__buttons"
+);
+const modalLogin = document.querySelector("#modal__login");
 const btnLogin = document.querySelector(".login__btn");
 const btnLogout = document.querySelector("#logout__btn");
 
@@ -75,10 +78,14 @@ function updateUIAfterLogin(currentAccount) {
   labelWelcome.textContent = `Welcome back, ${userFirstName}`;
 
   containerApp.style.opacity = 100;
-  loginForm.classList.remove("visible");
-  loginForm.classList.add("hidden");
+
+  // todo: hide modal only if login was successfully validated
+  modalLogin.classList.remove("show");
+
   btnLogout.classList.remove("hidden");
   btnLogout.classList.add("visible");
+  authenticationButtons.classList.remove("visible");
+  authenticationButtons.classList.add("hidden");
 }
 
 function updateNavAfterLogout() {
@@ -86,6 +93,6 @@ function updateNavAfterLogout() {
   containerApp.style.opacity = 0;
   btnLogout.classList.remove("visible");
   btnLogout.classList.add("hidden");
-  loginForm.classList.remove("hidden");
-  loginForm.classList.add("visible");
+  authenticationButtons.classList.remove("hidden");
+  authenticationButtons.classList.add("visible");
 }
