@@ -1,5 +1,5 @@
 import { accounts } from "./data";
-import { formatDateByLocaleTime } from "./utils";
+import { formatDateByLocaleTime, validateEmail } from "./utils";
 import {
   currentAccount,
   setCurrentAccount,
@@ -12,6 +12,10 @@ const authenticationButtons = document.querySelector(
   "#authentication__buttons"
 );
 const modalLogin = document.querySelector("#modal__login");
+
+const modalSignup = document.querySelector("#modal__signup");
+const btnSignup = document.querySelector(".signup__btn");
+
 const btnLogin = document.querySelector(".login__btn");
 const btnLogout = document.querySelector("#logout__btn");
 
@@ -24,12 +28,24 @@ const labelTimer = document.querySelector(".timer");
 const inputLoginUsername = document.querySelector(".login__input--user");
 const inputLoginPin = document.querySelector(".login__input--pin");
 
+const inputSignupFirstName = document.querySelector(
+  ".signup__input--firstName"
+);
+const inputSignupLastName = document.querySelector(".signup__input--lastName");
+const inputSignupEmail = document.querySelector(".signup__input--email");
+const inputSignupPin = document.querySelector(".signup__input--pin");
+const signupErrorMessage = document.querySelector("#signup_error");
+const signupSuccessMessage = document.querySelector("#signup_success");
+const modalSignupContainer = document.getElementById("modal__signup");
+const modalSignupForm = document.getElementById("signup__form");
+
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault(); // Prevent form from submitting
 
   const currAcc = accounts.find(
     (acc) => acc.username === inputLoginUsername.value
   );
+
   setCurrentAccount(currAcc);
 
   if (currentAccount?.pin === +inputLoginPin.value) {
@@ -47,6 +63,66 @@ btnLogin.addEventListener("click", function (e) {
     updateUIAfterLogin(currentAccount);
     updateUserBankSummaryUI(currentAccount);
   }
+});
+
+btnSignup.addEventListener("click", function (e) {
+  e.preventDefault(); // Prevent form from submitting
+  let ownerValue = `${inputSignupFirstName.value} ${inputSignupLastName.value}`;
+  let emailValue = inputSignupEmail.value;
+  let pinValue = inputSignupPin.value;
+
+  // Validate inputs
+  modalSignupForm.checkValidity();
+  modalSignupForm.reportValidity();
+  const isValidEmail = validateEmail(emailValue);
+  if (ownerValue.length < 7 || pinValue.length !== 4 || !isValidEmail) {
+    return;
+  }
+  // Check if an account already exists with owner or email key
+  const currAcc = accounts.find(
+    (acc) => acc.owner === ownerValue || acc.email === emailValue
+  );
+  if (currAcc) {
+    if (currAcc.owner === ownerValue) {
+      signupErrorMessage.textContent = `Account with name ${ownerValue} already exists!`;
+    } else if (currAcc.email === emailValue) {
+      signupErrorMessage.textContent = `Account with email ${emailValue} already exists!`;
+    }
+    return;
+  }
+
+  // handle successful signup
+  signupSuccessMessage.textContent = "Successfully signed up!";
+
+  let usernameValue =
+    inputSignupFirstName.value[0]?.toLowerCase() +
+    inputSignupLastName.value[0]?.toLowerCase();
+
+  const newUser = {
+    owner: ownerValue,
+    username: usernameValue,
+    interestRate: 1,
+    pin: Number(pinValue),
+    movements: [{ amount: 100, dateTime: new Date().toISOString() }],
+    currency: "EUR",
+    locale: "pt-PT",
+    email: emailValue,
+  };
+
+  setTimeout(() => {
+    accounts.push(newUser);
+    setCurrentAccount(newUser);
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    modalBackdrop.classList.remove("show");
+    modalBackdrop.style.display = "none";
+    modalSignupContainer.classList.remove("show");
+    modalSignupContainer.style.display = "none";
+
+    //TO-DO: clear input fields after successfully signing up
+
+    updateUIAfterLogin(currentAccount);
+    updateUserBankSummaryUI(currentAccount);
+  }, 2750);
 });
 
 export const startLogOutTimer = function () {
@@ -81,6 +157,7 @@ function updateUIAfterLogin(currentAccount) {
 
   // todo: hide modal only if login was successfully validated
   modalLogin.classList.remove("show");
+  modalSignup.classList.remove("show");
 
   btnLogout.classList.remove("hidden");
   btnLogout.classList.add("visible");

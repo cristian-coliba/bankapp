@@ -16,7 +16,7 @@ export const account1 = {
   ],
   currency: "EUR",
   locale: "pt-PT", // de-DE
-  email: "",
+  email: "js@gmail.com",
 };
 
 export const account2 = {
@@ -35,7 +35,7 @@ export const account2 = {
   ],
   currency: "USD",
   locale: "en-US",
-  email: "",
+  email: "jd@gmail.com",
 };
 
 export const accounts = [account1, account2];
