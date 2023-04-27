@@ -18,13 +18,18 @@
     <title>Bankist</title>
   </head>
   <body>
-    <!-- TOP NAVIGATION -->
+      <!-- TOP NAVIGATION -->
     <nav>
       <p class="welcome">Log in to get started</p>
       <img src="./images/content/logo.png" alt="Logo" class="logo" />
 
       <div id="authentication__buttons" class="visible">
-        <button type="button" id="signup__nav" class="btn btn-dark btn-lg me-3">
+        <button 
+          type="button" 
+          id="signup__nav" 
+          class="btn btn-dark btn-lg me-3" 
+          data-bs-toggle="modal"
+          data-bs-target="#modal__signup">
           Sign up!
         </button>
         <button
@@ -32,8 +37,7 @@
           id="login__nav"
           class="btn btn-dark btn-lg"
           data-bs-toggle="modal"
-          data-bs-target="#modal__login"
-        >
+          data-bs-target="#modal__login">
           Log in
         </button>
       </div>
@@ -124,68 +128,165 @@
         You will be logged out in <span class="timer">10:00</span>
       </p>
     </main>
-    <!-- Modal -->
+
+    <!-- Modal SIGNUP -->
+    <div
+      class="modal fade"
+      id="modal__signup"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+     >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-bottom-0">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+            </div>
+            <div class="modal-body">
+              <h1>
+                Sign up to get started!
+              </h1>
+              <div id="logged" class="visible">
+                <form class="login" id="signup__form">
+                  <div class="label-input">
+                    <label for="firstName" class="label">First Name</label>
+                    <input
+                      type="text"
+                      placeholder="John"
+                      class="auth__input signup__input--firstName"
+                      value=""
+                      name="firstName"
+                      required
+                      pattern="[A-Za-z]{3,15}"
+                    />
+                  </div>
+                  <div class="label-input">
+                    <label for="lastName" class="label">Last Name</label>
+                    <input
+                      type="text"
+                      placeholder="Doe"
+                      class="auth__input signup__input--lastName"
+                      value=""
+                      name="lastName"
+                      required
+                      pattern="[A-Za-z]{3,15}"
+                    />
+                  </div>
+                  <div class="label-input">
+                    <label for="email" class="label">Email Address</label>
+                    <input
+                      type="email"
+                      placeholder="example@gmail.com"
+                      class="auth__input signup__input--email"
+                      value=""
+                      name="email"
+                      required
+                    />
+                  </div>
+                  <div class="label-input">
+                    <label for="pin" class="label">Pincode</label>
+                    <input
+                      type="password"
+                      placeholder="1234"
+                      class="auth__input signup__input--pin"
+                      value=""
+                      name="pin"
+                      required
+                      pattern="[0-9]{4}" 
+                      maxlength="4"
+                    />
+                  </div>
+
+                  <p id="signup_error" class="error-message"></p>
+                  <p id="signup_success" class="success-message"></p>
+                  <div class="modal-footer border-top-0 mt-3">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-lg"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" class="signup__btn btn btn-outline-info btn-lg">
+                      Sign Up
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal LOGIN -->
     <div
       class="modal fade"
       id="modal__login"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
-    >
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-      <div class="modal-content">
-        <div class="modal-header border-bottom-0">
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <h1>
-            Login
-          </h1>
-          <div id="logged" class="visible">
-            <form class="login">
-              <div class="label-input">
-                <label for="username" class="label">User Name</label>
-                <input
-                  type="text"
-                  placeholder="user"
-                  class="login__input login__input--user"
-                  value="js"
-                  name="username"
-                />
+     >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-bottom-0">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+            </div>
+            <div class="modal-body">
+              <h1>
+                Login
+              </h1>
+              <div id="logged" class="visible">
+                <form class="login">
+                  <div class="label-input">
+                    <label for="username" class="label">User Name</label>
+                    <input
+                      type="text"
+                      placeholder="user"
+                      class="auth__input login__input--user"
+                      value="js"
+                      name="username"
+                    />
+                  </div>
+                  <div class="label-input">
+                    <label for="pincode" class="label">Password</label>
+                    <input
+                      type="text"
+                      placeholder="PIN"
+                      maxlength="4"
+                      class="auth__input login__input--pin"
+                      value="1111"
+                      name="pincode"
+                    />
+                  </div>
+                </form>
               </div>
-              <div class="label-input">
-                <label for="username" class="label">User Name</label>
-                <input
-                  type="text"
-                  placeholder="PIN"
-                  maxlength="4"
-                  class="login__input login__input--pin"
-                  value="1111"
-                />
-              </div>
-            </form>
+            </div>
+            <div class="modal-footer border-top-0 mt-3">
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-lg"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="login__btn btn btn-outline-info btn-lg" data-bs-dismiss="modal">
+                Login
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer border-top-0 mt-3">
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-lg"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="button" class="login__btn btn btn-outline-info btn-lg" data-bs-dismiss="modal">
-            Login
-          </button>
         </div>
       </div>
     </div>
-  </div>
-</div>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import "../scss/style.css";
+import "../scss/style.scss";
 import * as bootstrap from "bootstrap";
 ("use strict");
 
