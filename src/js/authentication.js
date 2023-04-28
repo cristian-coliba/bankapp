@@ -67,11 +67,17 @@ btnLogin.addEventListener("click", function (e) {
 
 btnSignup.addEventListener("click", function (e) {
   e.preventDefault(); // Prevent form from submitting
-  let ownerValue = `${inputSignupFirstName.value} ${inputSignupLastName.value}`;
-  let emailValue = inputSignupEmail.value;
-  let pinValue = inputSignupPin.value;
+  let ownerValue =
+    `${inputSignupFirstName.value} ${inputSignupLastName.value}`.trim();
+  let emailValue = inputSignupEmail.value.trim();
+  let pinValue = inputSignupPin.value.trim();
 
-  // Validate inputs
+  // To-DO: Validate inputs
+  // const isFormValid = validateSignUpForm();
+  // if (!isFormValid) {
+  //   return;
+  // }
+
   modalSignupForm.checkValidity();
   modalSignupForm.reportValidity();
   const isValidEmail = validateEmail(emailValue);
@@ -79,50 +85,14 @@ btnSignup.addEventListener("click", function (e) {
     return;
   }
   // Check if an account already exists with owner or email key
-  const currAcc = accounts.find(
-    (acc) => acc.owner === ownerValue || acc.email === emailValue
-  );
-  if (currAcc) {
-    if (currAcc.owner === ownerValue) {
-      signupErrorMessage.textContent = `Account with name ${ownerValue} already exists!`;
-    } else if (currAcc.email === emailValue) {
-      signupErrorMessage.textContent = `Account with email ${emailValue} already exists!`;
-    }
+  const doesUserExist = checkIfUserAlreadyExists(ownerValue, emailValue);
+
+  if (doesUserExist) {
     return;
+  } else {
+    // handle successful signup
+    handleSignupSuccess(ownerValue, pinValue, emailValue);
   }
-
-  // handle successful signup
-  signupSuccessMessage.textContent = "Successfully signed up!";
-
-  let usernameValue =
-    inputSignupFirstName.value[0]?.toLowerCase() +
-    inputSignupLastName.value[0]?.toLowerCase();
-
-  const newUser = {
-    owner: ownerValue,
-    username: usernameValue,
-    interestRate: 1,
-    pin: Number(pinValue),
-    movements: [{ amount: 100, dateTime: new Date().toISOString() }],
-    currency: "EUR",
-    locale: "pt-PT",
-    email: emailValue,
-  };
-
-  setTimeout(() => {
-    accounts.push(newUser);
-    setCurrentAccount(newUser);
-    const modalBackdrop = document.querySelector(".modal-backdrop");
-    modalBackdrop.classList.remove("show");
-    modalBackdrop.style.display = "none";
-    modalSignupContainer.classList.remove("show");
-    modalSignupContainer.style.display = "none";
-
-    //TO-DO: clear input fields after successfully signing up
-
-    updateUIAfterLogin(currentAccount);
-    updateUserBankSummaryUI(currentAccount);
-  }, 2750);
 });
 
 export const startLogOutTimer = function () {
@@ -163,6 +133,67 @@ function updateUIAfterLogin(currentAccount) {
   btnLogout.classList.add("visible");
   authenticationButtons.classList.remove("visible");
   authenticationButtons.classList.add("hidden");
+}
+function validateSignUpForm() {
+  // validate firstName, (check for min length (trim before) and alphabetical characters)
+  // (if not then update (signupErrorMessage.textContent) with the specific description of error) and also return false so that it doesn't validate beyond it
+  // validate lastName,
+  // validate email,
+  // validate pincode
+  // return true or false
+}
+function checkIfUserAlreadyExists(owner, email) {
+  const currAcc = accounts.find(
+    (acc) => acc.owner === owner || acc.email === email
+  );
+  if (currAcc) {
+    if (currAcc.owner === ownerValue) {
+      signupErrorMessage.textContent = `Account with name ${ownerValue} already exists!`;
+    } else if (currAcc.email === emailValue) {
+      signupErrorMessage.textContent = `Account with email ${emailValue} already exists!`;
+    }
+  }
+  return Boolean(currAcc);
+}
+function handleSignupSuccess(owner, pin, email) {
+  signupSuccessMessage.textContent = "Successfully signed up!";
+  const username = owner
+    .split(" ")
+    .map((elem) => elem[0].toLowerCase())
+    .join("");
+
+  const newUser = {
+    owner: owner,
+    username: username,
+    interestRate: 1,
+    pin: Number(pin),
+    movements: [{ amount: 100, dateTime: new Date().toISOString() }],
+    currency: "EUR",
+    locale: "pt-PT",
+    email: email,
+  };
+
+  setTimeout(() => {
+    inputSignupFirstName.value = "";
+    inputSignupLastName.value = "";
+    inputSignupEmail.value = "";
+    inputSignupPin.value = "";
+    signupErrorMessage.textContent = "";
+    signupSuccessMessage.textContent = "";
+
+    accounts.push(newUser);
+    setCurrentAccount(newUser);
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    modalBackdrop.classList.remove("show");
+    modalBackdrop.style.display = "none";
+    modalSignupContainer.classList.remove("show");
+    modalSignupContainer.style.display = "none";
+
+    //TO-DO: clear input fields after successfully signing up
+
+    updateUIAfterLogin(currentAccount);
+    updateUserBankSummaryUI(currentAccount);
+  }, 2750);
 }
 
 function updateNavAfterLogout() {
