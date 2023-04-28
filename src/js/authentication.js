@@ -1,5 +1,6 @@
 import { accounts } from "./data";
-import { formatDateByLocaleTime, validateEmail } from "./utils";
+import { formatDateByLocaleTime } from "./utils";
+import { validateSignUpForm, validateIfUserAlreadyExists } from "./validation";
 import {
   currentAccount,
   setCurrentAccount,
@@ -37,7 +38,6 @@ const inputSignupPin = document.querySelector(".signup__input--pin");
 const signupErrorMessage = document.querySelector("#signup_error");
 const signupSuccessMessage = document.querySelector("#signup_success");
 const modalSignupContainer = document.getElementById("modal__signup");
-const modalSignupForm = document.getElementById("signup__form");
 
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault(); // Prevent form from submitting
@@ -67,25 +67,29 @@ btnLogin.addEventListener("click", function (e) {
 
 btnSignup.addEventListener("click", function (e) {
   e.preventDefault(); // Prevent form from submitting
-  let ownerValue =
-    `${inputSignupFirstName.value} ${inputSignupLastName.value}`.trim();
+  let firstNameValue = inputSignupFirstName.value.trim();
+  let lastNameValue = inputSignupLastName.value.trim();
+  let ownerValue = `${firstNameValue} ${lastNameValue}`;
   let emailValue = inputSignupEmail.value.trim();
   let pinValue = inputSignupPin.value.trim();
 
   // To-DO: Validate inputs
-  // const isFormValid = validateSignUpForm();
-  // if (!isFormValid) {
-  //   return;
-  // }
-
-  modalSignupForm.checkValidity();
-  modalSignupForm.reportValidity();
-  const isValidEmail = validateEmail(emailValue);
-  if (ownerValue.length < 7 || pinValue.length !== 4 || !isValidEmail) {
+  const isFormValid = validateSignUpForm(
+    firstNameValue,
+    lastNameValue,
+    emailValue,
+    pinValue
+  );
+  if (!isFormValid) {
     return;
   }
+
   // Check if an account already exists with owner or email key
-  const doesUserExist = checkIfUserAlreadyExists(ownerValue, emailValue);
+  const doesUserExist = validateIfUserAlreadyExists(
+    accounts,
+    ownerValue,
+    emailValue
+  );
 
   if (doesUserExist) {
     return;
@@ -134,27 +138,7 @@ function updateUIAfterLogin(currentAccount) {
   authenticationButtons.classList.remove("visible");
   authenticationButtons.classList.add("hidden");
 }
-function validateSignUpForm() {
-  // validate firstName, (check for min length (trim before) and alphabetical characters)
-  // (if not then update (signupErrorMessage.textContent) with the specific description of error) and also return false so that it doesn't validate beyond it
-  // validate lastName,
-  // validate email,
-  // validate pincode
-  // return true or false
-}
-function checkIfUserAlreadyExists(owner, email) {
-  const currAcc = accounts.find(
-    (acc) => acc.owner === owner || acc.email === email
-  );
-  if (currAcc) {
-    if (currAcc.owner === ownerValue) {
-      signupErrorMessage.textContent = `Account with name ${ownerValue} already exists!`;
-    } else if (currAcc.email === emailValue) {
-      signupErrorMessage.textContent = `Account with email ${emailValue} already exists!`;
-    }
-  }
-  return Boolean(currAcc);
-}
+
 function handleSignupSuccess(owner, pin, email) {
   signupSuccessMessage.textContent = "Successfully signed up!";
   const username = owner
