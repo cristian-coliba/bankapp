@@ -15,14 +15,14 @@ const btnClose = document.querySelector(".form__btn--close");
 const inputTransferTo = document.querySelector(".form__input--to");
 const inputTransferAmount = document.querySelector(".form__input--amount");
 const inputLoanAmount = document.querySelector(".form__input--loan-amount");
-const inputCloseUsername = document.querySelector(".form__input--user");
+const inputCloseUserName = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
   const amount = +inputTransferAmount.value;
   const receiverAcc = accounts.find(
-    (acc) => acc.username === inputTransferTo.value
+    (acc) => acc.userName === inputTransferTo.value
   );
   inputTransferAmount.value = inputTransferTo.value = "";
 
@@ -30,7 +30,7 @@ btnTransfer.addEventListener("click", function (e) {
     amount > 0 &&
     receiverAcc &&
     currentAccount.balance >= amount &&
-    receiverAcc?.username !== currentAccount.username
+    receiverAcc?.userName !== currentAccount.userName
   ) {
     // transferring from
     currentAccount.movements.push({
@@ -89,11 +89,11 @@ btnClose.addEventListener("click", function (e) {
   e.preventDefault();
 
   if (
-    inputCloseUsername.value === currentAccount.username &&
+    inputCloseUserName.value === currentAccount.userName &&
     +inputClosePin.value === currentAccount.pin
   ) {
     const index = accounts.findIndex(
-      (acc) => acc.username === currentAccount.username
+      (acc) => acc.userName === currentAccount.userName
     );
     // Delete account
     accounts.splice(index, 1);
@@ -104,5 +104,5 @@ btnClose.addEventListener("click", function (e) {
     containerApp.style.opacity = 0;
   }
 
-  inputCloseUsername.value = inputClosePin.value = "";
+  inputCloseUserName.value = inputClosePin.value = "";
 });

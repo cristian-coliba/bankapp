@@ -162,7 +162,6 @@
                       value=""
                       name="firstName"
                       required
-                      
                     />
                   </div>
                   <div class="label-input">
@@ -174,7 +173,17 @@
                       value=""
                       name="lastName"
                       required
-                      pattern="[A-Za-z]{3,15}"
+                    />
+                  </div>
+                  <div class="label-input">
+                    <label for="userName" class="label">Username</label>
+                    <input
+                      type="text"
+                      placeholder="abc"
+                      class="auth__input signup__input--userName"
+                      value=""
+                      name="userName"
+                      required
                     />
                   </div>
                   <div class="label-input">
@@ -249,25 +258,26 @@
               <div id="logged" class="visible">
                 <form class="login">
                   <div class="label-input">
-                    <label for="username" class="label">User Name</label>
+                    <label for="userName" class="label">Username</label>
                     <input
                       type="text"
                       placeholder="user"
                       class="auth__input login__input--user"
-                      value="js"
-                      name="username"
+                      value="jss"
+                      name="userName"
                     />
                   </div>
                   <div class="label-input">
                     <label for="pincode" class="label">Password</label>
                     <input
-                      type="text"
+                      type="password"
                       placeholder="PIN"
                       maxlength="4"
                       class="auth__input login__input--pin"
                       value="1111"
                       name="pincode"
                     />
+                    
                   </div>
                 </form>
               </div>

@@ -19,9 +19,9 @@ export const formatMovementDate = function (date, locale) {
   // ex: it returns '18/11/2019' updating every time displayMovements
 };
 
-export const createUsernames = function (accs) {
+export const createUserNames = function (accs) {
   accs.forEach(function (acc) {
-    acc.username = acc.owner
+    acc.userName = acc.owner
       .toLowerCase()
       .split(" ")
       .map((name) => name[0])

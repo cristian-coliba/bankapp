@@ -2,7 +2,7 @@ import "../scss/style.scss";
 import * as bootstrap from "bootstrap";
 ("use strict");
 
-import { formatCur, formatMovementDate, createUsernames } from "./utils";
+import { formatCur, formatMovementDate, createUserNames } from "./utils";
 import { accounts } from "./data";
 import { startLogOutTimer } from "./authentication";
 import { containerApp } from "./main-operations";
@@ -14,12 +14,10 @@ const labelSumOut = document.querySelector(".summary__value--out");
 const labelSumInterest = document.querySelector(".summary__value--interest");
 
 const containerMovements = document.querySelector(".movements");
-
 const btnSort = document.querySelector(".btn--sort");
 
 export let currentAccount;
 export let timer; //global variables
-createUsernames(accounts);
 
 export function setCurrentAccount(acc) {
   currentAccount = acc;

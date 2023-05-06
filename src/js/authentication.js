@@ -26,7 +26,7 @@ const labelWelcome = document.querySelector(".welcome");
 const labelDate = document.querySelector(".date");
 const labelTimer = document.querySelector(".timer");
 
-const inputLoginUsername = document.querySelector(".login__input--user");
+const inputLoginUserName = document.querySelector(".login__input--user");
 const inputLoginPin = document.querySelector(".login__input--pin");
 
 const inputSignupFirstName = document.querySelector(
@@ -35,6 +35,7 @@ const inputSignupFirstName = document.querySelector(
 const inputSignupLastName = document.querySelector(".signup__input--lastName");
 const inputSignupEmail = document.querySelector(".signup__input--email");
 const inputSignupPin = document.querySelector(".signup__input--pin");
+const inputSignupUserName = document.querySelector(".signup__input--userName");
 const signupErrorMessage = document.querySelector("#signup_error");
 const signupSuccessMessage = document.querySelector("#signup_success");
 const modalSignupContainer = document.getElementById("modal__signup");
@@ -43,7 +44,7 @@ btnLogin.addEventListener("click", function (e) {
   e.preventDefault(); // Prevent form from submitting
 
   const currAcc = accounts.find(
-    (acc) => acc.username === inputLoginUsername.value
+    (acc) => acc.userName === inputLoginUserName.value
   );
 
   setCurrentAccount(currAcc);
@@ -70,6 +71,7 @@ btnSignup.addEventListener("click", function (e) {
   let firstNameValue = inputSignupFirstName.value.trim();
   let lastNameValue = inputSignupLastName.value.trim();
   let ownerValue = `${firstNameValue} ${lastNameValue}`;
+  let userNameValue = inputSignupUserName.value.trim();
   let emailValue = inputSignupEmail.value.trim();
   let pinValue = inputSignupPin.value.trim();
 
@@ -77,6 +79,7 @@ btnSignup.addEventListener("click", function (e) {
   const errorMessageValidation = validateSignUpForm(
     firstNameValue,
     lastNameValue,
+    userNameValue,
     emailValue,
     pinValue
   );
@@ -85,10 +88,11 @@ btnSignup.addEventListener("click", function (e) {
     return;
   }
 
-  // Check if an account already exists with owner or email key
+  // Check if an account already exists with owner | userName | email key
   const errorMessageUserExists = validateIfUserAlreadyExists(
     accounts,
     ownerValue,
+    userNameValue,
     emailValue
   );
   if (errorMessageUserExists) {
@@ -97,7 +101,7 @@ btnSignup.addEventListener("click", function (e) {
   }
 
   // handle successful signup
-  handleSignupSuccess(ownerValue, pinValue, emailValue);
+  handleSignupSuccess(ownerValue, pinValue, userNameValue, emailValue);
 });
 
 export const startLogOutTimer = function () {
@@ -140,16 +144,12 @@ function updateUIAfterLogin(currentAccount) {
   authenticationButtons.classList.add("hidden");
 }
 
-function handleSignupSuccess(owner, pin, email) {
+function handleSignupSuccess(owner, pin, userName, email) {
   signupSuccessMessage.textContent = "Successfully signed up!";
-  const username = owner
-    .split(" ")
-    .map((elem) => elem[0].toLowerCase())
-    .join("");
 
   const newUser = {
     owner: owner,
-    username: username,
+    userName: userName,
     interestRate: 1,
     pin: Number(pin),
     movements: [{ amount: 100, dateTime: new Date().toISOString() }],
@@ -161,6 +161,7 @@ function handleSignupSuccess(owner, pin, email) {
   setTimeout(() => {
     inputSignupFirstName.value = "";
     inputSignupLastName.value = "";
+    inputSignupUserName.value = "";
     inputSignupEmail.value = "";
     inputSignupPin.value = "";
     signupErrorMessage.textContent = "";
@@ -175,8 +176,6 @@ function handleSignupSuccess(owner, pin, email) {
     modalBackdrop.style.display = "none";
     modalSignupContainer.classList.remove("show");
     modalSignupContainer.style.display = "none";
-
-    //TO-DO: clear input fields after successfully signing up
 
     updateUIAfterLogin(currentAccount);
     updateUserBankSummaryUI(currentAccount);

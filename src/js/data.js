@@ -2,6 +2,7 @@ import { startLogOutTimer } from "./authentication";
 
 export const account1 = {
   owner: "Jonas Schmedtmann",
+  userName: "jss",
   interestRate: 1.2, // %
   pin: 1111,
   movements: [
@@ -21,6 +22,7 @@ export const account1 = {
 
 export const account2 = {
   owner: "Jessica Davis",
+  userName: "jdd",
   interestRate: 1.5,
   pin: 2222,
   movements: [

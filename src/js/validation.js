@@ -6,7 +6,7 @@ const validateEmail = (email) => {
     );
 };
 
-export function validateSignUpForm(firstName, lastName, email, pin) {
+export function validateSignUpForm(firstName, lastName, userName, email, pin) {
   if (firstName.length === 0) {
     return `Please enter your first name`;
   } else if (firstName.length < 3) {
@@ -23,6 +23,14 @@ export function validateSignUpForm(firstName, lastName, email, pin) {
     return `Last name must contain less than 16 characters`;
   }
 
+  if (userName.length === 0) {
+    return `Please enter your username`;
+  } else if (userName.length < 3) {
+    return `Username must be three or more characters`;
+  } else if (userName.length > 16) {
+    return `Username must contain less than 16 characters`;
+  }
+
   const isValidEmail = validateEmail(email);
   if (!isValidEmail) {
     return `Please enter a valid email address`;
@@ -34,13 +42,16 @@ export function validateSignUpForm(firstName, lastName, email, pin) {
   return "";
 }
 
-export function validateIfUserAlreadyExists(accounts, owner, email) {
+export function validateIfUserAlreadyExists(accounts, owner, userName, email) {
   const currAcc = accounts.find(
-    (acc) => acc.owner === owner || acc.email === email
+    (acc) =>
+      acc.owner === owner || acc.userName === userName || acc.email === email
   );
   if (currAcc) {
     if (currAcc.owner === owner) {
       return `Account with name ${owner} already exists!`;
+    } else if (currAcc.userName === userName) {
+      return `Account with username ${userName} already exists!`;
     } else if (currAcc.email === email) {
       return `Account with email ${email} already exists!`;
     }
