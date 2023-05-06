@@ -38,4 +38,13 @@ export const account2 = {
   email: "jd@gmail.com",
 };
 
-export const accounts = [account1, account2];
+// first check from local storage if there is a key 'accounts'
+const storageAccounts = localStorage.getItem("accounts");
+const parsedAccounts = JSON.parse(storageAccounts);
+export let accounts = [];
+if (parsedAccounts && parsedAccounts.length > 0) {
+  accounts = parsedAccounts;
+} else {
+  accounts = [account1, account2];
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+}

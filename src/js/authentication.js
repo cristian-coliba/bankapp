@@ -167,7 +167,9 @@ function handleSignupSuccess(owner, pin, email) {
     signupSuccessMessage.textContent = "";
 
     accounts.push(newUser);
+    localStorage.setItem("accounts", JSON.stringify(accounts));
     setCurrentAccount(newUser);
+
     const modalBackdrop = document.querySelector(".modal-backdrop");
     modalBackdrop.classList.remove("show");
     modalBackdrop.style.display = "none";

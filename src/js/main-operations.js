@@ -43,10 +43,13 @@ btnTransfer.addEventListener("click", function (e) {
       dateTime: new Date().toISOString(),
     });
 
+    // Update localStorage
+    localStorage.setItem("accounts", JSON.stringify(accounts));
+
     // Update UI
     updateUserBankSummaryUI(currentAccount);
 
-    //Reset timer
+    // Reset timer
     clearInterval(timer);
     setTimer(startLogOutTimer());
   }
@@ -55,10 +58,8 @@ btnTransfer.addEventListener("click", function (e) {
 //////////////////////////////////////////////////////////////////////////////
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
-  console.log("asdasd");
 
   const amount = Math.floor(inputLoanAmount.value);
-  console.log("currentAccount.movements", currentAccount);
 
   if (
     amount > 0 &&
@@ -70,6 +71,9 @@ btnLoan.addEventListener("click", function (e) {
         amount: amount,
         dateTime: new Date().toISOString(),
       });
+      // Update localStorage
+      localStorage.setItem("accounts", JSON.stringify(accounts));
+
       // Update UI
       updateUserBankSummaryUI(currentAccount);
       //Reset timer
@@ -93,6 +97,9 @@ btnClose.addEventListener("click", function (e) {
     );
     // Delete account
     accounts.splice(index, 1);
+    // Update localStorage
+    localStorage.setItem("accounts", JSON.stringify(accounts));
+
     // Hide UI
     containerApp.style.opacity = 0;
   }
