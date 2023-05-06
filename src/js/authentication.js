@@ -73,30 +73,31 @@ btnSignup.addEventListener("click", function (e) {
   let emailValue = inputSignupEmail.value.trim();
   let pinValue = inputSignupPin.value.trim();
 
-  // To-DO: Validate inputs
-  const isFormValid = validateSignUpForm(
+  // Check if inputs are valid
+  const errorMessageValidation = validateSignUpForm(
     firstNameValue,
     lastNameValue,
     emailValue,
     pinValue
   );
-  if (!isFormValid) {
+  if (errorMessageValidation) {
+    signupErrorMessage.textContent = errorMessageValidation;
     return;
   }
 
   // Check if an account already exists with owner or email key
-  const doesUserExist = validateIfUserAlreadyExists(
+  const errorMessageUserExists = validateIfUserAlreadyExists(
     accounts,
     ownerValue,
     emailValue
   );
-
-  if (doesUserExist) {
+  if (errorMessageUserExists) {
+    signupErrorMessage.textContent = errorMessageUserExists;
     return;
-  } else {
-    // handle successful signup
-    handleSignupSuccess(ownerValue, pinValue, emailValue);
   }
+
+  // handle successful signup
+  handleSignupSuccess(ownerValue, pinValue, emailValue);
 });
 
 export const startLogOutTimer = function () {

@@ -7,56 +7,43 @@ const validateEmail = (email) => {
 };
 
 export function validateSignUpForm(firstName, lastName, email, pin) {
-  const errorElement = document.getElementById("signup_error");
-
   if (firstName.length === 0) {
-    errorElement.textContent = `Please enter your first name`;
-    return false;
+    return `Please enter your first name`;
   } else if (firstName.length < 3) {
-    errorElement.textContent = `First name must be three or more characters`;
-    return false;
+    return `First name must be three or more characters`;
   } else if (firstName.length > 16) {
-    errorElement.textContent = `First name must contain less than 16 characters`;
-    return false;
+    return `First name must contain less than 16 characters`;
   }
 
   if (lastName.length === 0) {
-    errorElement.textContent = `Please enter your last name`;
-    return false;
+    return `Please enter your last name`;
   } else if (lastName.length < 3) {
-    errorElement.textContent = `Last name must be three or more characters`;
-    return false;
+    return `Last name must be three or more characters`;
   } else if (lastName.length > 16) {
-    errorElement.textContent = `Last name must contain less than 16 characters`;
-    return false;
+    return `Last name must contain less than 16 characters`;
   }
 
   const isValidEmail = validateEmail(email);
   if (!isValidEmail) {
-    errorElement.textContent = `Please enter a valid email address`;
-    return false;
+    return `Please enter a valid email address`;
   }
   if (pin.length !== 4) {
-    errorElement.textContent = `Pin code must be 4 characters long`;
-    return false;
+    return `Pin code must be 4 characters long`;
   }
 
-  errorElement.textContent = "";
-  return true;
+  return "";
 }
 
 export function validateIfUserAlreadyExists(accounts, owner, email) {
-  const errorElement = document.getElementById("signup_error");
-
   const currAcc = accounts.find(
     (acc) => acc.owner === owner || acc.email === email
   );
   if (currAcc) {
     if (currAcc.owner === owner) {
-      errorElement.textContent = `Account with name ${owner} already exists!`;
+      return `Account with name ${owner} already exists!`;
     } else if (currAcc.email === email) {
-      errorElement.textContent = `Account with email ${email} already exists!`;
+      return `Account with email ${email} already exists!`;
     }
   }
-  return Boolean(currAcc);
+  return "";
 }
